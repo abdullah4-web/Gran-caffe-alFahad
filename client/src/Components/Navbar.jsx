@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Pages/AuthContext';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Badge } from 'react-bootstrap';
+import { CartContext } from '../Pages/CartContext'; // Import CartContext
 
 function Navbar() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const location = useLocation();
     const { state, logout } = useContext(AuthContext); // Get user state and logout function from AuthContext
+    const { cartItems } = useContext(CartContext); // Access cartItems from CartContext
 
     const handleToggleNav = () => {
         setIsNavOpen(!isNavOpen);
@@ -14,6 +16,15 @@ function Navbar() {
 
     const handleCloseNav = () => {
         setIsNavOpen(false);
+    };
+
+    // Calculate total items in the cart
+    const totalItemsInCart = () => {
+        let totalItems = 0;
+        cartItems.forEach(item => {
+            totalItems += item.quantity;
+        });
+        return totalItems;
     };
 
     return (
@@ -49,7 +60,7 @@ function Navbar() {
                                                     <Dropdown.Item as={Link} to="/allorders" onClick={handleCloseNav}>All Orders</Dropdown.Item>
                                                     <Dropdown.Item as={Link} to="/addmenuitem" onClick={handleCloseNav}>Add Menu Item</Dropdown.Item>
                                                     <Dropdown.Item as={Link} to="/editmenuitem" onClick={handleCloseNav}>Edit Menu</Dropdown.Item>
-                                                    <Dropdown.Item as={Link} to="/dashboard" onClick={handleCloseNav}>Profile</Dropdown.Item>
+                                                    <Dropdown.Item as={Link} to="/profile" onClick={handleCloseNav}>Profile</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         ) : (
@@ -72,6 +83,13 @@ function Navbar() {
                                 <Link to="/login" className="btn btn-primary py-2 px-4 me-2" onClick={handleCloseNav}>Login</Link>
                                 <Link to="/register" className="btn btn-primary py-2 px-4 me-2" onClick={handleCloseNav}>Register</Link>
                             </>
+                        )}
+                        {/* Conditionally render cart icon and badge only if cart is not empty */}
+                        {totalItemsInCart() > 0 && (
+                            <Link to="/cart" className="nav-link">
+                                <i className="fa fa-shopping-cart fa-lg"></i>
+                                <Badge bg="primary" className="ms-1">{totalItemsInCart()}</Badge> {/* Display total items in cart */}
+                            </Link>
                         )}
                     </div>
                 </div>

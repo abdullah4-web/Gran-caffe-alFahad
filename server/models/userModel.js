@@ -7,9 +7,6 @@ const userSchema = new mongoose.Schema(
     password: { type: String }, 
     isAdmin: { type: Boolean, default: false, required: true },
     picture: { type: String, trim: true },
-    otp: { type: String, trim: true },
-    otpExpiration: { type: Date },
-    googleId: { type: String, trim: true },
   },
   {
     timestamps: true,

@@ -17,6 +17,9 @@ import OTP from './Pages/Otp'
 import AdminRoute from './AdminRoute'
 import Error from './Pages/Error'
 import EditMenu from './Pages/EditMenu'
+import Profile from './Pages/Profile'
+import ProtectedRoute from './ProtectedRoute'
+import Cart from './Pages/Cart'
 
 const App = () => {
   return (
@@ -35,8 +38,10 @@ const App = () => {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/otp" element={<OTP />} />
-          <Route path="*" element={<Error />} />
+          <Route path="/cart" element={<Cart />} />
 
+          <Route path="*" element={<Error />} />
+          <Route path="/profile" element={ <ProtectedRoute><Profile /></ProtectedRoute>} />
 
 
 

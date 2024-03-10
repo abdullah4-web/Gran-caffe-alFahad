@@ -81,5 +81,36 @@ router.delete('/deletemenuitem/:id', isAuth, isAdmin, async (req, res) => {
     }
 });
 
+// Route to edit a menu item by ID (only accessible to admin users)
+router.put('/editmenuitem/:id', isAuth, isAdmin, uploadImageToCloudinary, async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const { name, price, description, category, subcategory } = req.body;
+        
+        // Check if an image was uploaded, if not, use the existing image URL
+        const image = req.file ? req.file.path : req.body.image;
+
+        // Find the menu item by ID and update its fields
+        const updatedItem = await MenuItem.findByIdAndUpdate(itemId, {
+            name,
+            price,
+            description,
+            image,
+            category,
+            subcategory
+        }, { new: true });
+
+        if (!updatedItem) {
+            return res.status(404).json({ message: 'Menu item not found' });
+        }
+
+        res.json(updatedItem); // Respond with the updated item
+    } catch (error) {
+        console.error('Error updating menu item:', error);
+        res.status(500).json({ message: 'Error updating menu item' });
+    }
+});
+
+
 
 export default router;

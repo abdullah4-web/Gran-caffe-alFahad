@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { CartContext } from '../Pages/CartContext'; // Assuming the file path to your context file
 
-const MenuItem = ({ item, onAddToCart }) => {
+const MenuItem = ({ item }) => {
+  const { addToCart } = useContext(CartContext);
+
   const handleAddToCart = () => {
-    onAddToCart(item);
+    addToCart(item); // Call addToCart function with the item
   };
 
   return (
@@ -22,7 +25,9 @@ const MenuItem = ({ item, onAddToCart }) => {
               <h5 className="card-title">{item.name}</h5>
               <p className="card-text">{item.price} AED</p>
               <p className="card-text">{item.description}</p>
-              <button className="btn btn-outline-primary" onClick={handleAddToCart}>Add to Cart</button>
+              <button className="btn btn-outline-primary" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>
@@ -30,22 +35,14 @@ const MenuItem = ({ item, onAddToCart }) => {
     </div>
   );
 };
-
-const MenuCard = ({ menuItems, onAddToCart }) => {
+const MenuCard = ({ menuItems }) => {
   return (
     <div className="row g-4">
       {menuItems.map((item, index) => (
-        <MenuItem key={index} item={item} onAddToCart={onAddToCart} />
+        <MenuItem key={index} item={item} />
       ))}
     </div>
   );
 };
-
-
-
-
-
-
-
 
 export default MenuCard;
